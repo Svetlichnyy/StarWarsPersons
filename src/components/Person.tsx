@@ -29,7 +29,7 @@ const Person = (person:IPerson) => {
 
     }
     return (
-            <Grid item>
+            <Grid item >
                 <Card sx={{ maxWidth: 345 }} variant={"outlined"} onClick={()=> setUpPerson()}>
                     <CardActionArea>
                         <CardMedia

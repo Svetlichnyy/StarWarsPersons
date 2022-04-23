@@ -10,9 +10,14 @@ const PersonPage = () => {
     useEffect(() =>{
         let isRequestPerformed = false
         const fetchPers =  async () => {
-            const curPers = await getOnePerson(Number(persId))
-            if (!isRequestPerformed) {
-                setPers(curPers.data)
+            try {
+                const curPers = await getOnePerson(Number(persId))
+                if (!isRequestPerformed) {
+                    setPers(curPers.data)
+                }
+            }
+            catch (err){
+                console.log(err)
             }
         }
         fetchPers();

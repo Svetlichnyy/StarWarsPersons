@@ -19,6 +19,7 @@ export interface  IPerson {
 export interface ISearch{
     searchWord:string;
     setSearchWord: any;
+    debouncedSearchTerm:string;
 }
 
 export type PersonContextType = {

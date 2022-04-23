@@ -1,16 +1,17 @@
-import React, {FunctionComponent, useState} from 'react';
-import {IconButton, InputBase, Paper} from "@mui/material";
-import {searchByName} from "../axios";
+import React from 'react';
+import { IconButton, InputBase, Paper} from "@mui/material";
 import {ISearch} from "../@types/personcard";
 
-const Search = ({searchWord, setSearchWord}:ISearch) => {
-    const [word,setWord] = useState('')
+const Search = ({searchWord, setSearchWord,debouncedSearchTerm}:ISearch) => {
+
+
+
     function SearchByName(e:any){
         e.preventDefault();
-        if (word.length) {
-            setSearchWord(word);
-        }
-        }
+        console.log(searchWord);
+        if (debouncedSearchTerm) {
+             setSearchWord(debouncedSearchTerm);
+        }}
 
     return (
         <Paper
@@ -22,7 +23,9 @@ const Search = ({searchWord, setSearchWord}:ISearch) => {
                 placeholder="Search By Name"
                 inputProps={{ 'aria-label': 'Search By Name' }}
                 id={'search'}
-                onChange={(e) =>{setWord(e.target.value)}}
+                onChange={(e) => {
+                    setSearchWord(e.target.value)
+                }}
             />
             <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" onClick={(e)=>SearchByName(e)}>
                 Search

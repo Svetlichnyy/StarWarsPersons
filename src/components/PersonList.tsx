@@ -1,20 +1,25 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Person from "./Person";
 import personContext from "../context/personContext";
-import {Grid, Pagination, Typography} from "@mui/material";
-import {IPerson} from "../@types/personcard";
+import {debounce, Grid, Pagination, Typography} from "@mui/material";
+import {IPerson, ISearch} from "../@types/personcard";
 import getPersons, {searchByName} from "../axios";
 
-const PersonList = (searchWord:any)=> {
+const PersonList = ({searchWord,setSearchWord, debouncedSearchTerm}:ISearch)=> {
     const [page,setPage] = useState(1)
     const [state,setState] = useState([])
     const [curPersons,setCurPersons] = useState([])
     const persons = useContext(personContext)
 
     const getPersonsByPage = async () => {
+    try{
         const response = await getPersons(page)
         setCurPersons(response.data.results)
     }
+    catch (err){
+        console.log(err)
+    }}
+
     useEffect(() => {
         getPersonsByPage();
         setState([])
@@ -23,20 +28,26 @@ const PersonList = (searchWord:any)=> {
     useEffect(() =>{
         let isRequestPerformed = false
         const searchPersons =  async () => {
-            const searchedPersons = await searchByName(searchWord.searchWord)
-            if (!isRequestPerformed && searchWord.searchWord.length) {
+        try {
+            const searchedPersons = await searchByName(searchWord)
+            if (!isRequestPerformed && searchWord.length) {
                 setState(searchedPersons.data.results)
+            }
+        }
+        catch(err)
+            {
+                console.log(err)
             }
         }
         searchPersons();
         return () => {
             isRequestPerformed = true;
         }
-    },[searchWord])
+    },[debouncedSearchTerm])
 
     return (
         <>
-        <Grid container spacing={2}>
+        <Grid container >
             <Typography variant={"h4"} style={{minWidth:'800px',marginTop:'20px'}}>
                 Here will be searched persons
             </Typography>
