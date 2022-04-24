@@ -4,24 +4,27 @@ import personContext from "../context/personContext";
 import {debounce, Grid, Pagination, Typography} from "@mui/material";
 import {IPerson, ISearch} from "../@types/personcard";
 import getPersons, {searchByName} from "../axios";
+import {StarWarsContext} from "../context/starwars/StarWarsContext";
 
 const PersonList = ({searchWord,setSearchWord, debouncedSearchTerm}:ISearch)=> {
     const [page,setPage] = useState(1)
     const [state,setState] = useState([])
     const [curPersons,setCurPersons] = useState([])
-    const persons = useContext(personContext)
+    // const persons = useContext(personContext)
+    const {persons,getPersons}:any = useContext(StarWarsContext);
 
-    const getPersonsByPage = async () => {
-    try{
-        const response = await getPersons(page)
-        setCurPersons(response.data.results)
-    }
-    catch (err){
-        console.log(err)
-    }}
+    // const getPersonsByPage = async () => {
+    // try{
+    //     const response = await getPersons(page)
+    //     setCurPersons(response.data.results)
+    // }
+    // catch (err){
+    //     console.log(err)
+    // }}
 
     useEffect(() => {
-        getPersonsByPage();
+        getPersons(page);
+        setCurPersons(persons);
         setState([])
     },[page])
 
@@ -44,7 +47,7 @@ const PersonList = ({searchWord,setSearchWord, debouncedSearchTerm}:ISearch)=> {
             isRequestPerformed = true;
         }
     },[debouncedSearchTerm])
-
+    console.log(persons)
     return (
         <>
         <Grid container >
@@ -65,7 +68,8 @@ const PersonList = ({searchWord,setSearchWord, debouncedSearchTerm}:ISearch)=> {
             </Typography>
             {
                 (curPersons.length?curPersons:persons).map((person:IPerson,index:number)=>{
-                    return(<Person {...person} key={index+((page-1)*10)+1}/>
+                    return(
+                        <Person {...person} key={index+((page-1)*10)+1}/>
                     )
                 })
             }

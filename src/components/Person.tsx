@@ -4,27 +4,31 @@ import {IPerson} from "../@types/personcard";
 import {useNavigate} from "react-router-dom"
 
 const Person = (person:IPerson) => {
+
     const navigate = useNavigate();
     const personUrl = person.url;
     const personId = personUrl.replace(/[^0-9]/g, '')
     const link = "/about:" + personId
+
     function setUpPerson (){
+
         const curSession = JSON.parse(sessionStorage.getItem('history') as string)
+
         if (curSession) {
             const sessionKeys = Object.keys(curSession);
-            for (let item of sessionKeys) {
-                if (curSession[item].name === person.name) {
-                    delete curSession[item];
-                    break;
+                for (let item of sessionKeys) {
+                    if (curSession[item].name === person.name) {
+                        delete curSession[item];
+                        break;
+                    }
                 }
-            }
             if (sessionKeys.length > 3) {
                 delete curSession[sessionKeys[sessionKeys.length-1]]
                 sessionStorage.setItem('history',JSON.stringify(curSession))
             }
         }
-        sessionStorage.setItem('history',JSON.stringify({[Date.now()]: person,...curSession}))
 
+        sessionStorage.setItem('history',JSON.stringify({[Date.now()]: person,...curSession}))
         navigate(link);
 
     }

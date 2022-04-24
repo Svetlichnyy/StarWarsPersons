@@ -5,6 +5,7 @@ import personContext from "./context/personContext";
 import getPersons from "./axios";
 import PersonPage from "./pages/PersonPage";
 import { Routes, Route} from "react-router-dom";
+import {StarWarsState} from "./context/starwars/StarWarsState";
 
 function App() {
     const [persons,setPersons] = useState([])
@@ -23,12 +24,14 @@ function App() {
         }
     },[])
   return (
-    <personContext.Provider value={persons}>
-        <Routes>
-            <Route path="/" element={<MainPage/>} />
-            <Route path="/about:id" element={<PersonPage/>} />
-        </Routes>
-    </personContext.Provider>
+     <StarWarsState>
+        <personContext.Provider value={persons}>
+            <Routes>
+                <Route path="/" element={<MainPage/>} />
+                <Route path="/about:id" element={<PersonPage/>} />
+            </Routes>
+        </personContext.Provider>
+     </StarWarsState>
   );
 }
 
