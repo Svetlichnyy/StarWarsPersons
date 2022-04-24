@@ -1,17 +1,14 @@
-import React from 'react';
-import { IconButton, InputBase, Paper} from "@mui/material";
-import {ISearch} from "../@types/personcard";
+import { IconButton, InputBase, Paper } from "@mui/material";
 
-const Search = ({searchWord, setSearchWord,debouncedSearchTerm}:ISearch) => {
+import { ISearch } from "../@types/personcard";
 
-
-
-    function SearchByName(e:any){
+const Search = ({ searchWord, setSearchWord, debouncedSearchTerm }: ISearch) => {
+    function SearchByName(e: any) {
         e.preventDefault();
-        console.log(searchWord);
         if (debouncedSearchTerm) {
-             setSearchWord(debouncedSearchTerm);
-        }}
+            setSearchWord(debouncedSearchTerm);
+        }
+    }
 
     return (
         <Paper
@@ -27,7 +24,10 @@ const Search = ({searchWord, setSearchWord,debouncedSearchTerm}:ISearch) => {
                     setSearchWord(e.target.value)
                 }}
             />
-            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search" onClick={(e)=>SearchByName(e)}>
+            <IconButton
+                type="submit" sx={{ p: '10px' }}
+                aria-label="search" onClick={(e) => SearchByName(e)}
+            >
                 Search
             </IconButton>
         </Paper>

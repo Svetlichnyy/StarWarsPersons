@@ -1,5 +1,4 @@
 export interface IState {
-    user:object,
-    users: object[],
-    history: object[],
+    onePerson:object,
+    persons: object[],
 }

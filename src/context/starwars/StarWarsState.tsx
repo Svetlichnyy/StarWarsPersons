@@ -1,47 +1,42 @@
-import React,{useReducer} from 'react';
+import { useReducer } from 'react';
 import axios from "axios";
 
-import {StarWarsContext} from "./StarWarsContext";
-import {StarWarsReducer} from "./StarWarsReducer"
-import {SET_HISTORY,GET_PERSONS,GET_PERSON} from "../types";
+import { StarWarsContext } from "./StarWarsContext";
+import { StarWarsReducer } from "./StarWarsReducer"
+import { GET_PERSONS, GET_PERSON } from "../types";
+import {IPerson} from "../../@types/personcard";
 
 
 
-export const StarWarsState = ({children}:any)=> {
+export const StarWarsState = ({ children }: any) => {
 
 
     const initialState = {
-        person:{},
-        persons:[],
-        history:[],
+        person: {},
+        persons: [],
+        history: [],
     }
 
-    const [state,dispatch] = useReducer(StarWarsReducer,initialState);
+    const [state, dispatch] = useReducer(StarWarsReducer, initialState);
 
-    const getPersons = async (page?:number) => {
-        let url;
-        page ? (url = 'https://swapi.dev/api/people/?page=' + page) : (url = 'https://swapi.dev/api/people')
-        const res = await axios.get(url)
-
+    const getPersons = (persons:IPerson[]) => {
         dispatch({
-            type:GET_PERSONS,
-            payload: res.data.results,
+            type: GET_PERSONS,
+            payload: persons,
         })
     }
 
-    const getOnePerson = async (id:number) => {
-        const res = await axios.get("https://swapi.dev/api/people/"+id+"/")
-        console.log(res)
+    const getOnePerson = (person:IPerson) => {
         dispatch({
-            type:GET_PERSON,
-            payload:res.data,
+            type: GET_PERSON,
+            payload: person,
         })
     }
 
-    const {person,persons} = state;
+    const { onePerson, persons } = state;
 
-    return(
-        <StarWarsContext.Provider value={{getOnePerson,getPersons,person,persons}}>
+    return (
+        <StarWarsContext.Provider value={{ getOnePerson, getPersons, onePerson, persons }}>
             {children}
         </StarWarsContext.Provider>
     )

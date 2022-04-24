@@ -1,33 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import {Card, CardContent, CardMedia, Container, Paper, Typography} from "@mui/material";
-import {getOnePerson} from "../axios";
-import {IPerson} from "../@types/personcard";
+import {useContext, useEffect, useState} from 'react';
+import { Card, CardContent, CardMedia, Container, Paper, Typography } from "@mui/material";
+
+import { getOnePerson } from "../axios";
+import { IPerson } from "../@types/personcard";
+import { useParams } from 'react-router-dom';
+import {StarWarsContext} from "../context/starwars/StarWarsContext";
+
 
 const PersonPage = () => {
-    const [pers,setPers] = useState({} as IPerson)
-    const linkString = window.location.href
-    const persId = linkString.split('about:')[1];
-    useEffect(() =>{
-        let isRequestPerformed = false
-        const fetchPers =  async () => {
-            try {
-                const curPers = await getOnePerson(Number(persId))
-                if (!isRequestPerformed) {
-                    setPers(curPers.data)
+    const {onePerson}:any = useContext(StarWarsContext);
+    const [pers, setPers] = useState({} as IPerson)
+
+    let { id: persId } = useParams();
+
+    useEffect(() => {
+        let isRequestPerformed = false;
+        if(onePerson === undefined) {
+
+        const fetchPers = async () => {
+
+                try {
+                    const curPers = await getOnePerson(Number(persId))
+                    if (!isRequestPerformed) {
+                        setPers(curPers.data)
+                    }
+                } catch (err) {
+                    console.log(err)
                 }
             }
-            catch (err){
-                console.log(err)
-            }
-        }
         fetchPers();
-        return () => {
-            isRequestPerformed = true;
+    } else {
+            setPers(onePerson)
         }
     },[])
     return (
-        <Container >
-            <Card sx={{ maxWidth: 1200,maxHeight: 1200 }} variant={"outlined"}>
+        <Container sx={{ mt: 2, mb: 2 }}>
+            <Card sx={{ maxWidth: 1200, maxHeight: 1200 }} variant={"outlined"}>
                 <Paper>
                     <CardMedia
                         component="img"
@@ -64,16 +72,16 @@ const PersonPage = () => {
                             Homeworld : {pers.homeworld}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Species : {pers.species?.length ? pers.species.map((item) => ` `+ item) : "No species was found"}
+                            Species : {pers.species?.length ? pers.species.map((item) => ` ` + item) : "No species was found"}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Vehicles : {pers.vehicles?.length ? pers.vehicles.map((item) => " "+ item) : "No vehicles was found"}
+                            Vehicles : {pers.vehicles?.length ? pers.vehicles.map((item) => " " + item) : "No vehicles was found"}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Starships : {pers.starships?.length ? pers.starships.map((item) => " "+ item) : "No starships was found"}
+                            Starships : {pers.starships?.length ? pers.starships.map((item) => " " + item) : "No starships was found"}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Films : {pers.films?.length ? pers.films.map((item) => ` `+ item) : "No films was found"}
+                            Films : {pers.films?.length ? pers.films.map((item) => ` ` + item) : "No films was found"}
                         </Typography>
                     </CardContent>
                 </Paper>
