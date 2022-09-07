@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/StarWarsPersons/static/css/main.e1d6f05c.css",
+    "main.js": "/StarWarsPersons/static/js/main.ccf093b2.js",
+    "index.html": "/StarWarsPersons/index.html",
+    "main.e1d6f05c.css.map": "/StarWarsPersons/static/css/main.e1d6f05c.css.map",
+    "main.ccf093b2.js.map": "/StarWarsPersons/static/js/main.ccf093b2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e1d6f05c.css",
+    "static/js/main.ccf093b2.js"
+  ]
+}
